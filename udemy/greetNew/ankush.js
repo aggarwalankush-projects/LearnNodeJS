@@ -1,5 +1,9 @@
+// require return json object in our variable
+var names=require('./name.json');
+
 var ankush=function(){
-    console.log("greeting ankush");
+    console.log(names.ankush);
 };
+
 
 module.exports=ankush;
