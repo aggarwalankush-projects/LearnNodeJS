@@ -2,29 +2,45 @@ var Patient = require('./mongoSchema').Patient;
 var PatientInfo = require('./mongoSchema').PatientInfo;
 var async = require('async');
 
-var savePatient = function (jsonObj, res) {
-    console.log(jsonObj.lastName);
+//var savePatient = function (jsonObj, res) {
+//    console.log(jsonObj.lastName);
+//    var patientJson = jsonObj;
+//    var NewPatient = new Patient({
+//        lastName: patientJson.lastName,
+//        mrn: patientJson.mrn
+//    });
+//    NewPatient.save(function (err) {
+//        if (err) {
+//            console.log("fail save");
+//            res.send("Patient can't be saved in database - " + patientJson.lastName);
+//        } else {
+//            console.log('saved successfully!!');
+//            res.send("Patient successfully saved - " + patientJson.lastName);
+//        }
+//    });
+//
+//};
+
+var savePatient = function (jsonObj) {
     var patientJson = jsonObj;
     var NewPatient = new Patient({
-        lastName: patientJson.lastName,
+        lastname: patientJson.lastname,
         mrn: patientJson.mrn
     });
     NewPatient.save(function (err) {
         if (err) {
-            console.log("fail save");
-            res.send("Patient can't be saved in database - " + patientJson.lastName);
+            console.log("duplicate patient entry or fail save");
         } else {
-            console.log('saved successfully!!');
-            res.send("Patient successfully saved - " + patientJson.lastName);
+            console.log('patient saved successfully!!');
         }
     });
 
 };
 
-
 var savePatientInfo = function (jsonObj, res) {
-
-    var patientInfoJson = jsonObj;
+    savePatient(jsonObj.patient);
+    var patientId=jsonObj.patient.mrn;
+    var patientInfoJson = jsonObj.ca_data;
     if (patientInfoJson.length < 1)
         return;
     var today = new Date();
@@ -34,7 +50,7 @@ var savePatientInfo = function (jsonObj, res) {
             function (callback) {
                 PatientInfo.findOne({
                     date: today,
-                    patientId: patientInfoJson[0].patientId
+                    patientId: patientId
                 }).sort('-cprCount').exec(function (err, info) {
                     if (err)
                         console.log("error in computing cpr count");
@@ -52,8 +68,8 @@ var savePatientInfo = function (jsonObj, res) {
                     var NewPatientInfo = new PatientInfo({
                         date: today,
                         cprCount: cprCount,
-                        patientId: patientInfo.patientId,
-                        time: patientInfo.time,
+                        patientId: patientId,
+                        cpr_time: patientInfo.cpr_time,
                         cpr: patientInfo.cpr,
                         monitoring: patientInfo.monitoring,
                         intervention: patientInfo.intervention,
@@ -62,10 +78,10 @@ var savePatientInfo = function (jsonObj, res) {
 
                     NewPatientInfo.save(function (err) {
                         if (err) {
-                            console.log("fail save " + NewPatientInfo.patientId);
-                            callback(err, 'failed');
+                            console.log("fail save for cpr_time "+patientInfo.cpr_time+" for patientId : " + patientId);
+                            console.log(err);
                         } else {
-                            console.log("saved successfully!! " + NewPatientInfo.patientId);
+                            console.log("saved successfully!! " + patientId);
                         }
                     });
                 });
@@ -85,7 +101,7 @@ var savePatientInfo = function (jsonObj, res) {
 };
 
 module.exports = {
-    savePatient: savePatient,
+    //savePatient: savePatient,
     savePatientInfo: savePatientInfo
 };
 

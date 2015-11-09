@@ -1,12 +1,11 @@
 var patient = {
-    lastName: "P1",
+    lastname: "P1",
     mrn: "1234"
 };
 
-var patientInfo = [
+var ca_data = [
     {
-        time: "0.00",
-        patientId: "1234",
+        cpr_time: "00:00:00",
         cpr: "CPR1",
         monitoring: {
             M11: "VM11",
@@ -22,8 +21,7 @@ var patientInfo = [
         }
     },
     {
-        time: "0.02",
-        patientId: "1234",
+        cpr_time: "00:00:02",
         cpr: "CPR2",
         monitoring: {
             M21: "VM21",
@@ -40,34 +38,42 @@ var patientInfo = [
     }
 ];
 
+var patientInfo={
+    patient:patient,
+    ca_data:ca_data
+};
+
+
+
 var dateToSearch= new Date();
 var patientDetails={
-    patientId: 1234,
+    patientId: patient.mrn,
     date:dateToSearch.getTime()
 };
 
 
-document.getElementById('patient').innerHTML = JSON.stringify(patient, null, 2);
+
+//document.getElementById('patient').innerHTML = JSON.stringify(patient, null, 2);
 document.getElementById('patientInfo').innerHTML = JSON.stringify(patientInfo, null, 2);
 document.getElementById('patientDetails').innerHTML = JSON.stringify(patientDetails, null, 2);
 
-$("#patientForm").submit(function (e) {
-    e.preventDefault();
-    $.ajax({
-        type: "POST",
-        url: $(this).attr('action'),
-        data: JSON.stringify(patient),
-        contentType: 'application/json',
-        success: function (data) {
-            document.getElementById('patientResponse').innerText = data;
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR);
-            console.log(textStatus);
-            console.log(errorThrown);
-        }
-    });
-});
+//$("#patientForm").submit(function (e) {
+//    e.preventDefault();
+//    $.ajax({
+//        type: "POST",
+//        url: $(this).attr('action'),
+//        data: JSON.stringify(patient),
+//        contentType: 'application/json',
+//        success: function (data) {
+//            document.getElementById('patientResponse').innerText = data;
+//        },
+//        error: function (jqXHR, textStatus, errorThrown) {
+//            console.log(jqXHR);
+//            console.log(textStatus);
+//            console.log(errorThrown);
+//        }
+//    });
+//});
 
 $("#patientInfoForm").submit(function (e) {
     e.preventDefault();

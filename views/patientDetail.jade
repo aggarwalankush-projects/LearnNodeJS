@@ -20,7 +20,7 @@ html
                     tbody: each jsonObj in data
                         tr
                             td= jsonObj.cprCount
-                            td= jsonObj.time
+                            td= jsonObj.cpr_time
                             td= jsonObj.cpr
                             td: table: each val, index in jsonObj.monitoring
                                 tr: td= index + '  -  ' + val

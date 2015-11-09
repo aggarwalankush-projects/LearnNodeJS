@@ -5,7 +5,7 @@ var mongoQuery = require('./mongoQuery');
 mongoose.connect('mongodb://localhost/test');
 
 module.exports = {
-    savePatient: mongoSave.savePatient,
+    //savePatient: mongoSave.savePatient,
     savePatientInfo: mongoSave.savePatientInfo,
     getPatientInfo: mongoQuery.getPatientInfo
 };
