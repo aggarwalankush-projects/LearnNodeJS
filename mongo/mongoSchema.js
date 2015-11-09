@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var patientSchema = new Schema({
-        lastName: String,
+        lastname: String,
         mrn: String
     },
     {
@@ -17,7 +17,7 @@ var patientInfoSchema = new Schema({
         date: Date,
         cprCount: Number,
         patientId: String,
-        time: Number,
+        cpr_time: String,
         cpr: String,
         monitoring: Schema.Types.Mixed,
         intervention: Schema.Types.Mixed,
@@ -28,7 +28,7 @@ var patientInfoSchema = new Schema({
     }
 );
 
-patientInfoSchema.index({date: 1, cprCount: 1, patientId: 1, time: 1}, {unique: true});
+patientInfoSchema.index({date: 1, cprCount: 1, patientId: 1, cpr_time: 1}, {unique: true});
 
 var Patient = mongoose.model('Patient', patientSchema);
 var PatientInfo = mongoose.model('PatientInfo', patientInfoSchema);
